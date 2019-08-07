@@ -17,6 +17,7 @@ using FeedTheNeed.WebAPI.Models;
 using FeedTheNeed.WebAPI.Providers;
 using FeedTheNeed.WebAPI.Results;
 using FeedTheNeed.Services;
+using FeedTheNeed.Models.User;
 
 namespace FeedTheNeed.WebAPI.Controllers
 {
@@ -99,6 +100,7 @@ namespace FeedTheNeed.WebAPI.Controllers
 
             if (user.PasswordHash != null)
             {
+                
                 logins.Add(new UserLoginInfoViewModel
                 {
                     LoginProvider = LocalLoginProvider,
@@ -138,24 +140,45 @@ namespace FeedTheNeed.WebAPI.Controllers
         }
 
         //POST api/Account/ChangeUserInfo
+       
         [Route("ChangeUserInfo")]
-        public IHttpActionResult ChangeUserInfo(ApplicationUser user)
+        public IHttpActionResult Put(UserUpdate user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            
             UserService userService = CreateUserService();
             if (!userService.ModifyUser(user)) return InternalServerError();
             return Ok();
 
         }
-        private UserService CreateUserService()
+        [Route("RemoveUser")]
+
+        public IHttpActionResult Delete(Guid id)
         {
-            var userID = Guid.Parse(User.Identity.GetUserId());
+            var tempID = User.Identity.GetUserId();
+            UserService userService = new UserService(id);
+            userService.RemoveUser(id);
+            return Ok();
+        }
+        [Route("DetailUser")]
+        public IHttpActionResult Get(Guid id)
+        {
+            var tempID = User.Identity.GetUserId();
+            Guid tempGuid = Guid.Parse(tempID);
+            UserService userService = CreateUserService();
+            var user = userService.DetailUser(tempGuid);
+            return Ok(user);
+        }
+        public UserService CreateUserService()
+        {
+            var userID = Guid.Parse(User.Identity.GetUserId()) ;
             var userService = new UserService(userID);
             return userService;
         }
+        
 
         // POST api/Account/SetPassword
         [Route("SetPassword")]

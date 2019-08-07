@@ -51,6 +51,8 @@
     <Compile Include="Posting\PostingListItem.cs" />
     <Compile Include="Posting\PostingUpdate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="User\UserDetail.cs" />
+    <Compile Include="User\UserUpdate.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
