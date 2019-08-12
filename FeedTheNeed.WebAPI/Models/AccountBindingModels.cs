@@ -35,13 +35,6 @@ namespace FeedTheNeed.WebAPI.Models
     public class RegisterBindingModel
     {
         [Required]
-        [Display(Name = "First Name")]
-        public string FirstName { get; set; }
-        [Required]
-        [Display(Name = "Last Name")]
-        public string LastName { get; set; }
-        
-        [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
 
@@ -55,6 +48,14 @@ namespace FeedTheNeed.WebAPI.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+        [Required]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
+        public string PhoneNumber { get; set; }
+        
     }
 
     public class RegisterExternalBindingModel

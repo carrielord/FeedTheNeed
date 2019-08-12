@@ -148,8 +148,8 @@ namespace FeedTheNeed.WebAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            
-            UserService userService = CreateUserService();
+
+            UserService userService = new UserService();
             if (!userService.ModifyUser(user)) return InternalServerError();
             return Ok();
 
@@ -159,7 +159,7 @@ namespace FeedTheNeed.WebAPI.Controllers
         public IHttpActionResult Delete(Guid id)
         {
             var tempID = User.Identity.GetUserId();
-            UserService userService = new UserService(id);
+            UserService userService = new UserService();
             userService.RemoveUser(id);
             return Ok();
         }
@@ -168,16 +168,11 @@ namespace FeedTheNeed.WebAPI.Controllers
         {
             var tempID = User.Identity.GetUserId();
             Guid tempGuid = Guid.Parse(tempID);
-            UserService userService = CreateUserService();
+            UserService userService = new UserService();
             var user = userService.DetailUser(tempGuid);
             return Ok(user);
         }
-        public UserService CreateUserService()
-        {
-            var userID = Guid.Parse(User.Identity.GetUserId()) ;
-            var userService = new UserService(userID);
-            return userService;
-        }
+        
         
 
         // POST api/Account/SetPassword
@@ -365,25 +360,32 @@ namespace FeedTheNeed.WebAPI.Controllers
         }
 
         // POST api/Account/Register
+        [HttpPost]
         [AllowAnonymous]
         [Route("Register")]
-        public async Task<IHttpActionResult> Register(RegisterBindingModel model)
+        public async Task<IHttpActionResult> PostAsync(RegisterBindingModel model)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName };
+            var user = new ApplicationUser() { UserName = model.Email, Email = model.Email, FirstName = model.FirstName, LastName = model.LastName, PhoneNumber = model.PhoneNumber};
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
+            UserService userService = new UserService();
+            var success = userService.AddUser(user);
+            
+            
+                return Ok();
+            
+            
+            
+            
 
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
 
-            return Ok();
+
+
         }
 
         // POST api/Account/RegisterExternal
