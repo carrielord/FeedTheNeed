@@ -13,8 +13,12 @@ namespace FeedTheNeed.Services
 {
     public class UserService
     {
-        
-
+        public readonly Guid _userId;
+        public UserService(Guid userId)
+        {
+            _userId = userId;
+        }
+        public UserService() { }
         public bool ModifyUser(UserUpdate user)
         {
             
@@ -36,16 +40,16 @@ namespace FeedTheNeed.Services
             
         }
 
-        public UserDetail DetailUser(Guid id)
+        public UserDetail DetailUser()
         {
 
             using (var ctx = new ApplicationDbContext())
             {
-                var completeUserInfo = ctx.Users.Find(id.ToString());
-                Guid tempGuid = Guid.Parse(completeUserInfo.Id);
+                var completeUserInfo = ctx.Users.Find(_userId.ToString());
+                // Guid tempGuid = Guid.Parse(completeUserInfo.Id);
                 return new UserDetail
                 {
-                    UserID = tempGuid,
+                    UserID = _userId,
                     FirstName = completeUserInfo.FirstName,
                     LastName = completeUserInfo.LastName,
                     Email = completeUserInfo.Email,
@@ -58,6 +62,27 @@ namespace FeedTheNeed.Services
         }
 
         // public DetailUser
+
+        public UserDetail GetUserByID(Guid id)
+        {
+            //string stringID = id.ToString();
+            using (var ctx = new ApplicationDbContext())
+            {
+            Guid tempguid = id;
+
+                var entity = ctx.Users.Single(u => u.Id == tempguid.ToString());
+                return
+                    new UserDetail
+                    {
+                        UserID = tempguid,
+                        FirstName = entity.FirstName,
+                        LastName = entity.LastName,
+                        Email = entity.Email,
+                        PhoneNumber = entity.PhoneNumber
+                    };
+
+            }
+        }
 
         public bool RemoveUser(Guid userid)
         {

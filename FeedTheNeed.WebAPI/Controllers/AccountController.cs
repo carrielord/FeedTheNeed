@@ -76,6 +76,8 @@ namespace FeedTheNeed.WebAPI.Controllers
             return Ok();
         }
 
+  
+
         // GET api/Account/ManageInfo?returnUrl=%2F&generateState=true
         [Route("ManageInfo")]
         public async Task<ManageInfoViewModel> GetManageInfo(string returnUrl, bool generateState = false)
@@ -164,17 +166,23 @@ namespace FeedTheNeed.WebAPI.Controllers
             return Ok();
         }
         [Route("DetailUser")]
-        public IHttpActionResult Get(Guid id)
+        public IHttpActionResult Get()
         {
-            var tempID = User.Identity.GetUserId();
-            Guid tempGuid = Guid.Parse(tempID);
-            UserService userService = new UserService();
-            var user = userService.DetailUser(tempGuid);
+            //var tempID = User.Identity.GetUserId();
+            //Guid tempGuid = Guid.Parse(id.ToString());
+            UserService userService = CreateUserService();
+            var user = userService.DetailUser();
             return Ok(user);
         }
         
-        
+        public UserService CreateUserService()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new UserService(userId);
+            return service;
+        }
 
+        // POST api/Account/SetPassword
         // POST api/Account/SetPassword
         [Route("SetPassword")]
         public async Task<IHttpActionResult> SetPassword(SetPasswordBindingModel model)
