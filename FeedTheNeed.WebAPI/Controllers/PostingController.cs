@@ -35,7 +35,7 @@ namespace FeedTheNeed.WebAPI.Controllers
             return Ok();
         }
 
-        public  IHttpActionResult Put(PostingUpdate model)
+        public IHttpActionResult Put(PostingUpdate model)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             PostingService postingService = CreatePostingService();
