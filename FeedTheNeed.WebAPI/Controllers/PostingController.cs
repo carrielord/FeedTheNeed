@@ -15,14 +15,14 @@ namespace FeedTheNeed.WebAPI.Controllers
     {
         public IHttpActionResult GetAll()
         {
-            PostingService postingService = CreatePostingService();
+            PostingService postingService = new PostingService();
             var postings = postingService.ViewAllPostings();
             return Ok(postings);
         }
 
         public IHttpActionResult Get(int id)
         {
-            PostingService postingService = CreatePostingService();
+            PostingService postingService = new PostingService();
             var posting = postingService.GetPostingByID(id);
             return Ok(posting);
         }
