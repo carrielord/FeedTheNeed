@@ -25,10 +25,9 @@ namespace FeedTheNeed.Services
                 using (var ctx = new ApplicationDbContext())
                 {
                     var userToChange = ctx.Users.Find(user.UserID.ToString());
-
+                    userToChange.Id = user.UserID.ToString();
                     userToChange.FirstName = user.FirstName;
                     userToChange.LastName = user.LastName;
-                    userToChange.Id = user.UserID.ToString();
                     userToChange.Email = user.Email;
                     userToChange.PhoneNumber = user.PhoneNumber;
 
@@ -84,17 +83,17 @@ namespace FeedTheNeed.Services
             }
         }
 
-        public bool RemoveUser(Guid userid)
+        public bool RemoveUser(UserDetail user)
         {
             using (var ctx = new ApplicationDbContext())
             {
-                var user = ctx.Users.Find(userid.ToString());
-                var postingsToRemove = ctx.PostingTable.Where(u => u.UserID == userid);
+                var userToDelete = ctx.Users.Find(user.UserID.ToString());
+                var postingsToRemove = ctx.PostingTable.Where(u => u.UserID == user.UserID);
                 foreach (var posting in postingsToRemove)
                 {
                     ctx.PostingTable.Remove(posting);
                 }
-                ctx.Users.Remove(user);
+                ctx.Users.Remove(userToDelete);
                 ctx.SaveChanges();
                 var didItSaveChanges = ctx.SaveChanges();
                 return didItSaveChanges == ctx.SaveChanges();
