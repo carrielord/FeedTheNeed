@@ -17,6 +17,7 @@ namespace FeedTheNeed.Services
         {
             _userID = userID;
         }
+        public PostingService() { }
 
         public bool CreatePosting (PostingCreate model)
         {
@@ -44,8 +45,7 @@ namespace FeedTheNeed.Services
         {
             using (var ctx = new ApplicationDbContext())
             {
-                var query = ctx.PostingTable.Where
-                    (e => e.UserID == _userID).Select
+                var query = ctx.PostingTable.Select
                     (e => new PostingListItem
                 {
                     PostID=e.PostID,
@@ -64,6 +64,28 @@ namespace FeedTheNeed.Services
             using(var ctx = new ApplicationDbContext())
             {
                 var entity = ctx.PostingTable.Single(e => e.PostID == id && e.UserID == _userID);
+                return new PostingDetails
+                {
+                    PostID = entity.PostID,
+                    Title = entity.Title,
+                    Details = entity.Details,
+                    Address = entity.Address,
+                    City = entity.City,
+                    State = entity.State,
+                    NameOfProvider = entity.NameOfProvider,
+                    Category = entity.Category,
+                    DatePosted = entity.DatePosted,
+                    DateAvailable = entity.DateAvailable
+                };
+
+            }
+        }
+        
+        public PostingDetails GetPostingByIDNoGuid(int id)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity = ctx.PostingTable.Single(e => e.PostID == id);
                 return new PostingDetails
                 {
                     PostID = entity.PostID,

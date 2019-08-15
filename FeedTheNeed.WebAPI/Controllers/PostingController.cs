@@ -10,23 +10,33 @@ using System.Web.Http;
 
 namespace FeedTheNeed.WebAPI.Controllers
 {
-    [Authorize]
     public class PostingController : ApiController
     {
         public IHttpActionResult GetAll()
         {
-            PostingService postingService = CreatePostingService();
+            PostingService postingService = new PostingService();
             var postings = postingService.ViewAllPostings();
             return Ok(postings);
         }
 
-        public IHttpActionResult Get(int id)
+        [Authorize]
+        [Route("Posting/Details/{id}")]
+        public IHttpActionResult GetWhenLoggedIn(int id)
         {
             PostingService postingService = CreatePostingService();
             var posting = postingService.GetPostingByID(id);
             return Ok(posting);
         }
+        [Route("Posting/DetailsNLI/{id}")]
+        public IHttpActionResult GetNotLoggedIn(int id)
+        {
+            PostingService postingService = new PostingService();
+            var posting = postingService.GetPostingByIDNoGuid(id);
+            return Ok(posting);
+        }
 
+
+        [Authorize]
         public IHttpActionResult Post(PostingCreate model)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -35,6 +45,7 @@ namespace FeedTheNeed.WebAPI.Controllers
             return Ok();
         }
 
+        [Authorize]
         public IHttpActionResult Put(PostingUpdate model)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
@@ -43,6 +54,7 @@ namespace FeedTheNeed.WebAPI.Controllers
             return Ok();
         }
 
+        [Authorize]
         public IHttpActionResult Delete(int id)
         {
             PostingService postingService = CreatePostingService();
@@ -56,5 +68,6 @@ namespace FeedTheNeed.WebAPI.Controllers
             var postingService = new PostingService(userID);
             return postingService;
         }
+        
     }
 }
