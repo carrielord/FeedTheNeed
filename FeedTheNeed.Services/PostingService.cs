@@ -18,6 +18,8 @@ namespace FeedTheNeed.Services
             _userID = userID;
         }
 
+        public PostingService() { }
+
         public bool CreatePosting (PostingCreate model)
         {
             var entity = new Posting()
