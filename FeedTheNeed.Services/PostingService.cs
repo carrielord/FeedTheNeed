@@ -49,6 +49,7 @@ namespace FeedTheNeed.Services
                     (e => new PostingListItem
                 {
                     PostID=e.PostID,
+                    UserID=e.UserID,
                     Title=e.Title,
                     State=e.State,
                     DateAvailable=e.DateAvailable,
@@ -67,6 +68,7 @@ namespace FeedTheNeed.Services
                 return new PostingDetails
                 {
                     PostID = entity.PostID,
+                    UserID = entity.UserID,
                     Title = entity.Title,
                     Details = entity.Details,
                     Address = entity.Address,

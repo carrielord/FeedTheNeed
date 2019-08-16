@@ -10,7 +10,7 @@ namespace FeedTheNeed.Models.Posting
     public class PostingListItem
     {
         public int PostID { get; set; }
-        public string UserID { get; set; }
+        public Guid UserID { get; set; }
         public string Title { get; set; }
         public StateList State { get; set; }
         public DateTime DateAvailable { get; set; }
