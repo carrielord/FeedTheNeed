@@ -149,6 +149,19 @@ namespace FeedTheNeed.WebAPI.Controllers
 
         //POST api/Account/ChangeUserInfo
        
+
+        //public IHttpActionResult Put(NoteEdit note)
+        //{
+        //    if (!ModelState.IsValid)
+        //        return BadRequest(ModelState);
+
+        //    var service = CreateNoteService();
+
+        //    if (!service.UpdateNote(note))
+        //        return InternalServerError();
+
+        //    return Ok();
+        //}
         [Route("ChangeUserInfo")]
         public IHttpActionResult Put(UserUpdate user)
         {
@@ -157,18 +170,22 @@ namespace FeedTheNeed.WebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            UserService userService = new UserService();
-            if (!userService.ModifyUser(user)) return InternalServerError();
+            var service = CreateUserService();
+
+            if (!service.ModifyUser(user))
+                return InternalServerError();
             return Ok();
 
         }
+        
+       
         [Route("RemoveUser")]
 
-        public IHttpActionResult Delete(Guid id)
+        public IHttpActionResult Put(UserDetail user)
         {
-            var tempID = User.Identity.GetUserId();
-            UserService userService = new UserService();
-            userService.RemoveUser(id);
+            // var tempID = User.Identity.GetUserId();
+            UserService service = CreateUserService();
+            service.RemoveUser(user);
             return Ok();
         }
         [Route("DetailUser")]
@@ -192,6 +209,16 @@ namespace FeedTheNeed.WebAPI.Controllers
             var user = userService.PostingDetailUser(id);
             return Ok(user);
         }
+
+        
+        [Route("UserList")]
+        public IHttpActionResult GetAll()
+        {
+            UserService service = CreateUserService();
+            var userlist = service.ViewAllUsers();
+            return Ok(userlist);
+        }
+        
         public UserService CreateUserService()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());
