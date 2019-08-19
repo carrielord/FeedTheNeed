@@ -61,6 +61,27 @@ namespace FeedTheNeed.Services
 
         }
 
+        public UserDetail PostingDetailUser(Guid id)
+        {
+
+            using (var ctx = new ApplicationDbContext())
+            {
+                var completeUserInfo = ctx.Users.Find(id.ToString());
+                // Guid tempGuid = Guid.Parse(completeUserInfo.Id);
+                return new UserDetail
+                {
+                    UserID = id,
+                    FirstName = completeUserInfo.FirstName,
+                    LastName = completeUserInfo.LastName,
+                    Email = completeUserInfo.Email,
+                    PhoneNumber = completeUserInfo.PhoneNumber
+
+                };
+            }
+            //user.HelpfulRating = completeUserInfo.HelpfulRating;
+
+        }
+
         // public DetailUser
 
         public UserDetail GetUserByID(Guid id)
