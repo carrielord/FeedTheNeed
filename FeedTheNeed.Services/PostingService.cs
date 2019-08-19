@@ -46,8 +46,7 @@ namespace FeedTheNeed.Services
         {
             using (var ctx = new ApplicationDbContext())
             {
-                var query = ctx.PostingTable.Where
-                    (e => e.UserID == _userID).Select
+                var query = ctx.PostingTable.Select
                     (e => new PostingListItem
                 {
                     PostID=e.PostID,
@@ -65,7 +64,7 @@ namespace FeedTheNeed.Services
         {
             using(var ctx = new ApplicationDbContext())
             {
-                var entity = ctx.PostingTable.Single(e => e.PostID == id && e.UserID == _userID);
+                var entity = ctx.PostingTable.Single(e => e.PostID == id);
                 return new PostingDetails
                 {
                     PostID = entity.PostID,
@@ -82,6 +81,7 @@ namespace FeedTheNeed.Services
 
             }
         }
+
 
         public bool UpdatePosting (PostingUpdate model)
         {

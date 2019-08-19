@@ -60,9 +60,15 @@ namespace FeedTheNeed.WebAPI.Controllers
         {
             ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
 
+            string role = "";
+            if (User.IsInRole("Admin"))
+            {
+                role = "Admin";
+            }
             return new UserInfoViewModel
             {
                 Email = User.Identity.GetUserName(),
+                Role = role,
                 HasRegistered = externalLogin == null,
                 LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
             };
@@ -172,9 +178,20 @@ namespace FeedTheNeed.WebAPI.Controllers
             //Guid tempGuid = Guid.Parse(id.ToString());
             UserService userService = CreateUserService();
             var user = userService.DetailUser();
+            if (User.IsInRole("Admin"))
+            {
+                user.Role = "Admin";
+            }
+            else user.Role = "";
             return Ok(user);
         }
-        
+        [Route("PostingDetailUser")]
+        public IHttpActionResult Get(Guid id)
+        {
+            UserService userService = new UserService();
+            var user = userService.PostingDetailUser(id);
+            return Ok(user);
+        }
         public UserService CreateUserService()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());
