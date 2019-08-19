@@ -38,7 +38,27 @@ namespace FeedTheNeed.Services
             }
             
         }
+        public IEnumerable<UserDetail> ViewAllUsers()
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
 
+                var query = ctx.Users.ToList();
+                IEnumerable<UserDetail> userlist = query.Select(a => new UserDetail
+                {
+                    UserID = Guid.Parse(a.Id),
+                    FirstName = a.FirstName,
+                    LastName = a.LastName,
+                    Email = a.Email,
+                    PhoneNumber = a.PhoneNumber
+
+
+                });
+
+
+                return userlist;
+            }
+        }
         public UserDetail DetailUser()
         {
 

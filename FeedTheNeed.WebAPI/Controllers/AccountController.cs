@@ -171,9 +171,11 @@ namespace FeedTheNeed.WebAPI.Controllers
             return Ok();
 
         }
+        
+       
         [Route("RemoveUser")]
 
-        public IHttpActionResult Delete(UserDetail user)
+        public IHttpActionResult Put(UserDetail user)
         {
             // var tempID = User.Identity.GetUserId();
             UserService service = CreateUserService();
@@ -188,6 +190,14 @@ namespace FeedTheNeed.WebAPI.Controllers
             UserService userService = CreateUserService();
             var user = userService.DetailUser();
             return Ok(user);
+        }
+        
+        [Route("UserList")]
+        public IHttpActionResult GetAll()
+        {
+            UserService service = CreateUserService();
+            var userlist = service.ViewAllUsers();
+            return Ok(userlist);
         }
         
         public UserService CreateUserService()
