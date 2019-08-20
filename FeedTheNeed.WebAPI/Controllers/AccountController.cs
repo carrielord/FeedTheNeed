@@ -60,9 +60,15 @@ namespace FeedTheNeed.WebAPI.Controllers
         {
             ExternalLoginData externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
 
+            string role = "";
+            if (User.IsInRole("Admin"))
+            {
+                role = "Admin";
+            }
             return new UserInfoViewModel
             {
                 Email = User.Identity.GetUserName(),
+                Role = role,
                 HasRegistered = externalLogin == null,
                 LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
             };
@@ -143,6 +149,19 @@ namespace FeedTheNeed.WebAPI.Controllers
 
         //POST api/Account/ChangeUserInfo
        
+
+        //public IHttpActionResult Put(NoteEdit note)
+        //{
+        //    if (!ModelState.IsValid)
+        //        return BadRequest(ModelState);
+
+        //    var service = CreateNoteService();
+
+        //    if (!service.UpdateNote(note))
+        //        return InternalServerError();
+
+        //    return Ok();
+        //}
         [Route("ChangeUserInfo")]
         public IHttpActionResult Put(UserUpdate user)
         {
@@ -151,18 +170,22 @@ namespace FeedTheNeed.WebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            UserService userService = new UserService();
-            if (!userService.ModifyUser(user)) return InternalServerError();
+            var service = CreateUserService();
+
+            if (!service.ModifyUser(user))
+                return InternalServerError();
             return Ok();
 
         }
+        
+       
         [Route("RemoveUser")]
 
-        public IHttpActionResult Delete(Guid id)
+        public IHttpActionResult Put(UserDetail user)
         {
-            var tempID = User.Identity.GetUserId();
-            UserService userService = new UserService();
-            userService.RemoveUser(id);
+            // var tempID = User.Identity.GetUserId();
+            UserService service = CreateUserService();
+            service.RemoveUser(user);
             return Ok();
         }
         [Route("DetailUser")]
@@ -172,7 +195,28 @@ namespace FeedTheNeed.WebAPI.Controllers
             //Guid tempGuid = Guid.Parse(id.ToString());
             UserService userService = CreateUserService();
             var user = userService.DetailUser();
+            if (User.IsInRole("Admin"))
+            {
+                user.Role = "Admin";
+            }
+            else user.Role = "";
             return Ok(user);
+        }
+        [Route("PostingDetailUser")]
+        public IHttpActionResult Get(Guid id)
+        {
+            UserService userService = new UserService();
+            var user = userService.PostingDetailUser(id);
+            return Ok(user);
+        }
+
+        
+        [Route("UserList")]
+        public IHttpActionResult GetAll()
+        {
+            UserService service = CreateUserService();
+            var userlist = service.ViewAllUsers();
+            return Ok(userlist);
         }
         
         public UserService CreateUserService()

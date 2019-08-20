@@ -25,10 +25,9 @@ namespace FeedTheNeed.Services
                 using (var ctx = new ApplicationDbContext())
                 {
                     var userToChange = ctx.Users.Find(user.UserID.ToString());
-
+                    userToChange.Id = user.UserID.ToString();
                     userToChange.FirstName = user.FirstName;
                     userToChange.LastName = user.LastName;
-                    userToChange.Id = user.UserID.ToString();
                     userToChange.Email = user.Email;
                     userToChange.PhoneNumber = user.PhoneNumber;
 
@@ -39,7 +38,27 @@ namespace FeedTheNeed.Services
             }
             
         }
+        public IEnumerable<UserDetail> ViewAllUsers()
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
 
+                var query = ctx.Users.ToList();
+                IEnumerable<UserDetail> userlist = query.Select(a => new UserDetail
+                {
+                    UserID = Guid.Parse(a.Id),
+                    FirstName = a.FirstName,
+                    LastName = a.LastName,
+                    Email = a.Email,
+                    PhoneNumber = a.PhoneNumber
+
+
+                });
+
+
+                return userlist;
+            }
+        }
         public UserDetail DetailUser()
         {
 
@@ -50,6 +69,27 @@ namespace FeedTheNeed.Services
                 return new UserDetail
                 {
                     UserID = _userId,
+                    FirstName = completeUserInfo.FirstName,
+                    LastName = completeUserInfo.LastName,
+                    Email = completeUserInfo.Email,
+                    PhoneNumber = completeUserInfo.PhoneNumber
+
+                };
+            }
+            //user.HelpfulRating = completeUserInfo.HelpfulRating;
+
+        }
+
+        public UserDetail PostingDetailUser(Guid id)
+        {
+
+            using (var ctx = new ApplicationDbContext())
+            {
+                var completeUserInfo = ctx.Users.Find(id.ToString());
+                // Guid tempGuid = Guid.Parse(completeUserInfo.Id);
+                return new UserDetail
+                {
+                    UserID = id,
                     FirstName = completeUserInfo.FirstName,
                     LastName = completeUserInfo.LastName,
                     Email = completeUserInfo.Email,
@@ -84,17 +124,17 @@ namespace FeedTheNeed.Services
             }
         }
 
-        public bool RemoveUser(Guid userid)
+        public bool RemoveUser(UserDetail user)
         {
             using (var ctx = new ApplicationDbContext())
             {
-                var user = ctx.Users.Find(userid.ToString());
-                var postingsToRemove = ctx.PostingTable.Where(u => u.UserID == userid);
+                var userToDelete = ctx.Users.Find(user.UserID.ToString());
+                var postingsToRemove = ctx.PostingTable.Where(u => u.UserID == user.UserID);
                 foreach (var posting in postingsToRemove)
                 {
                     ctx.PostingTable.Remove(posting);
                 }
-                ctx.Users.Remove(user);
+                ctx.Users.Remove(userToDelete);
                 ctx.SaveChanges();
                 var didItSaveChanges = ctx.SaveChanges();
                 return didItSaveChanges == ctx.SaveChanges();
