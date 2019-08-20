@@ -67,6 +67,7 @@ namespace FeedTheNeed.Services
                 var entity = ctx.PostingTable.Single(e => e.PostID == id);
                 return new PostingDetails
                 {
+                    UserID = entity.UserID,
                     PostID = entity.PostID,
                     Title = entity.Title,
                     Details = entity.Details,
