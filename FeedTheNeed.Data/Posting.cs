@@ -66,17 +66,17 @@ namespace FeedTheNeed.Data
         Nebraska,
         [Display(Name = "Nevada")]
         Nevada,
-        [Display(Name = "NewHampshire")]
+        [Display(Name = "New Hampshire")]
         NewHampshire,
-        [Display(Name = "NewJersey")]
+        [Display(Name = "New Jersey")]
         NewJersey,
-        [Display(Name = "NewMexico")]
+        [Display(Name = "New Mexico")]
         NewMexico,
-        [Display(Name = "NewYork")]
+        [Display(Name = "New York")]
         NewYork,
-        [Display(Name = "NorthCarolina")]
+        [Display(Name = "North Carolina")]
         NorthCarolina,
-        [Display(Name = "NorthDakota")]
+        [Display(Name = "North Dakota")]
         NorthDakota,
         [Display(Name = "Ohio")]
         Ohio,
@@ -86,11 +86,11 @@ namespace FeedTheNeed.Data
         Oregon,
         [Display(Name = "Pennsylvania")]
         Pennsylvania,
-        [Display(Name = "RhodeIsland")]
+        [Display(Name = "Rhode Island")]
         RhodeIsland,
-        [Display(Name = "SouthCarolina")]
+        [Display(Name = "South Carolina")]
         SouthCarolina,
-        [Display(Name = "SouthDakota")]
+        [Display(Name = "South Dakota")]
         SouthDakota,
         [Display(Name = "Tennessee")]
         Tennessee,
@@ -104,7 +104,7 @@ namespace FeedTheNeed.Data
         Virginia,
         [Display(Name = "Washington")]
         Washington,
-        [Display(Name = "WestVirginia")]
+        [Display(Name = "West Virginia")]
         WestVirginia,
         [Display(Name = "Wisconsin")]
         Wisconsin,

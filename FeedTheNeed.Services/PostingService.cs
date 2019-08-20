@@ -49,6 +49,7 @@ namespace FeedTheNeed.Services
                 var query = ctx.PostingTable.Select
                     (e => new PostingListItem
                 {
+                    UserID=e.UserID.ToString(),
                     PostID=e.PostID,
                     Title=e.Title,
                     State=e.State,

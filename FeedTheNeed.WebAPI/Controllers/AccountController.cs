@@ -188,6 +188,15 @@ namespace FeedTheNeed.WebAPI.Controllers
             service.RemoveUser(user);
             return Ok();
         }
+
+        [Route("RemoveUserAdmin")]
+        public IHttpActionResult Put (Guid id)
+        {
+            UserService service = new UserService();
+            service.RemoveUserAdmin(id);
+            return Ok();
+        }
+
         [Route("DetailUser")]
         public IHttpActionResult Get()
         {
