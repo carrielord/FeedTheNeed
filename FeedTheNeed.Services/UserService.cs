@@ -140,8 +140,26 @@ namespace FeedTheNeed.Services
                 return didItSaveChanges == ctx.SaveChanges();
 
             }
-
         }
+
+        public bool RemoveUserAdmin(Guid id)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var userToDelete = ctx.Users.Find(id.ToString());
+                var postingsToRemove = ctx.PostingTable.Where(u => u.UserID == id);
+                foreach (var posting in postingsToRemove)
+                {
+                    ctx.PostingTable.Remove(posting);
+                }
+                ctx.Users.Remove(userToDelete);
+                ctx.SaveChanges();
+                var didItSaveChanges = ctx.SaveChanges();
+                return didItSaveChanges == ctx.SaveChanges();
+
+            }
+        }
+
         public bool AddUser(ApplicationUser user)
         {
             using (var ctx = new ApplicationDbContext())
