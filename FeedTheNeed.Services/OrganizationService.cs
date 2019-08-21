@@ -40,7 +40,6 @@ namespace FeedTheNeed.Services
                 var query =
                     ctx
                         .OrganizationTable
-                        .Where(e => e.OwnerID == _userId)
                         .Select(
                             e =>
                                 new OrganizationListItem
@@ -61,7 +60,7 @@ namespace FeedTheNeed.Services
                 var entity =
                     ctx
                         .OrganizationTable
-                        .Single(e => e.OrganizationID == organizationsId && e.OwnerID == _userId);
+                        .Single(e => e.OrganizationID == organizationsId);
                 return
                     new OrganizationDetail
                     {
